@@ -50,6 +50,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+CLIENT/client
+SERVER/server
 ftpserver
 ftpslave
 ftpclient
