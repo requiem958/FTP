@@ -17,7 +17,7 @@ command parse_command(char buff[], int bufSize){
       return cmd;
     }
     strcpy(cmd.arg, mot);
-    ER_EOL(mot);
+    mot[strlen(mot)-1]=0;
 
     cmd.type = GET;
   }
