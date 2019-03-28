@@ -20,7 +20,7 @@ int send_command(int serveurfd,rio_t *rio,rio_t * rioUser, command* cmd);
 
 void getfile(char *name, char * tmpname, rio_t *rio, int connfd);
 
-void regetfile(char *name, char * tmpname, rio_t *rio, int connfd);
+void regetfile(char *name, rio_t *rio, int connfd);
 void redirection (int * fd, rio_t *rio);
 
 void retrievefile(char *name, rio_t *rio, int connfd);

@@ -72,13 +72,16 @@ void retrievefile(char *name, rio_t *rio, int connfd){
   getfile(name,tmpname,rio,connfd);
 }
 
-void regetfile(char *name, char *tmpname, rio_t *rio, int connfd){
+void regetfile(char *name, rio_t *rio, int connfd){
   double time;
   int fd = 0;
   int n = 1;
   int octetsRecu = 0;
   static char buf[MAXLINE];
   int32_t tailleFichier;
+
+  char tmpname[MAX_NAME_LEN];
+  tmpFileName(name,tmpname,"tmp");
 
   fd = Open(tmpname,O_WRONLY | O_APPEND,DEF_MODE & ~DEF_UMASK);
 

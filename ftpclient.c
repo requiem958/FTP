@@ -48,6 +48,8 @@ int main(int argc, char **argv)
         case GET:
           retrievefile(cmd.arg,&rio,serverfd);
           break;
+        case REST:
+          regetfile(cmd.arg,&rio,serverfd);
         case BYE:
           quit = 1;
           break;
