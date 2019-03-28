@@ -57,7 +57,6 @@ int resend_file(char * name, long size, int clientfd){
 
     puts(">BEGIN");
     fstat(fd, &infosFichier);
-    *((int32_t*) buf) = htonl(infosFichier.st_size-size);
 
     if (lseek(fd,size,SEEK_SET) < size){
       close(fd);
@@ -66,6 +65,7 @@ int resend_file(char * name, long size, int clientfd){
     Rio_writen(clientfd, "150", 3);
 
     printf("Remaining file size : %d\n", (int32_t) (infosFichier.st_size-size));
+    *((int32_t*) buf) = htonl(infosFichier.st_size-size);
     Rio_writen(clientfd, buf,4);
 
     Rio_readinitb(&fileAsked, fd);

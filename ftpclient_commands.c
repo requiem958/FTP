@@ -38,6 +38,7 @@ void changeToReget(command *cmd){
 
   close(fd);
 
+  bzero(cmd->cmdline,MAXLINE);
   sprintf(cmd->cmdline, "REST %s %ld\n", cmd->arg, cmd->size);
   cmd->size =infosFichier.st_size;
 }
@@ -74,7 +75,7 @@ void retrievefile(char *name, rio_t *rio, int connfd){
 void regetfile(char *name, char *tmpname, rio_t *rio, int connfd){
   double time;
   int fd = 0;
-  int n = 0;
+  int n = 1;
   int octetsRecu = 0;
   static char buf[MAXLINE];
   int32_t tailleFichier;
@@ -123,7 +124,7 @@ void regetfile(char *name, char *tmpname, rio_t *rio, int connfd){
 void getfile(char *name, char *tmpname, rio_t *rio, int connfd){
   double time;
   int fd = 0;
-  int n = 0;
+  int n = 1;
   int octetsRecu = 0;
   static char buf[MAXLINE];
   int32_t tailleFichier;
@@ -141,6 +142,8 @@ void getfile(char *name, char *tmpname, rio_t *rio, int connfd){
       Rio_writen(fd,buf,n);
       octetsRecu += n;
     }
+
+  printf("Entre les deux : %d\n",n);
   if ( (n > 0) && octetsRecu < tailleFichier){
     bzero(buf,MAXLINE);
     n=rio_readnb(rio, buf, tailleFichier - octetsRecu);
