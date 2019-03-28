@@ -29,7 +29,7 @@ int send_file(char * name, int clientfd){
     Rio_writen(clientfd, buf,4);
 
     while ((n=Rio_readnb(&fileAsked,buf,BUF_LEN)) > 0) {
-      printf(">Server send %ld bytes\n",n);
+      printf(">Server send %ld bytes\n",(long) n);
       Rio_writen(clientfd, buf, n);
       bzero(buf,BUF_LEN);
     }

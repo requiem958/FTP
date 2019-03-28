@@ -7,7 +7,7 @@
 .PRECIOUS: %.o
 
 CC = clang
-CFLAGS = -Wall -Werror -g
+CFLAGS = -Wall -Werror
 LDFLAGS =
 
 # Note: -lnsl does not seem to work on Mac OS but will
