@@ -35,12 +35,12 @@ void changeToReget(command *cmd){
   struct stat infosFichier;
   int fd = open(tmpname,O_RDONLY,0);
   fstat(fd, &infosFichier);
+  cmd->size =infosFichier.st_size;
 
   close(fd);
 
   bzero(cmd->cmdline,MAXLINE);
   sprintf(cmd->cmdline, "REST %s %ld\n", cmd->arg, cmd->size);
-  cmd->size =infosFichier.st_size;
 }
 
 int send_command(int serveurfd,rio_t *rio,rio_t *rioUser, command*cmd){
