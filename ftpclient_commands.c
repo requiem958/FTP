@@ -145,8 +145,6 @@ void getfile(char *name, char *tmpname, rio_t *rio, int connfd){
       Rio_writen(fd,buf,n);
       octetsRecu += n;
     }
-
-  printf("Entre les deux : %d\n",n);
   if ( (n > 0) && octetsRecu < tailleFichier){
     bzero(buf,MAXLINE);
     n=rio_readnb(rio, buf, tailleFichier - octetsRecu);
