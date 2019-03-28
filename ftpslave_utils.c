@@ -6,7 +6,6 @@
 int send_file(char * name, int clientfd){
   size_t n;
 
-
   char buf[BUF_LEN];
   int fd = 0;
   rio_t fileAsked;
@@ -33,6 +32,46 @@ int send_file(char * name, int clientfd){
       printf(">Server send %ld bytes\n",n);
       Rio_writen(clientfd, buf, n);
       bzero(buf,BUF_LEN);
+    }
+    puts(">END");
+    return 0;
+  }
+}
+
+int resend_file(char * name, long size, int clientfd){
+  size_t n;
+
+  char buf[BUF_LEN];
+  int fd = 0;
+  rio_t fileAsked;
+  struct stat infosFichier;
+
+  printf(">Server received request to restart transfert for file (%s)\n",name);
+
+  if ((fd = open(name,O_RDONLY,0))<0){
+    return -1;
+  }
+  else{
+    printf("FILE %s exists.\n",name);
+    bzero(buf,BUF_LEN);
+
+    puts(">BEGIN");
+    fstat(fd, &infosFichier);
+    *((int32_t*) buf) = htonl(infosFichier.st_size-size);
+
+    if (lseek(fd,size,SEEK_SET) < size){
+      close(fd);
+      return -1;
+    };
+    Rio_writen(clientfd, "150", 3);
+
+    printf("Remaining file size : %d\n", (int32_t) (infosFichier.st_size-size));
+    Rio_writen(clientfd, buf,4);
+
+    Rio_readinitb(&fileAsked, fd);
+    while ((n=Rio_readnb(&fileAsked,buf,BUF_LEN)) > 0) {
+      printf(">Server send %ld bytes\n",n);
+      Rio_writen(clientfd, buf, n);
     }
     puts(">END");
     return 0;
@@ -89,6 +128,10 @@ int execute_command(command * cmd, int fd){
       Rio_writen(fd, "550", 3);
     }
     break;
+    case REST:
+    if (resend_file(cmd->arg,cmd->size,fd) == -1){
+      Rio_writen(fd, "550", 3);
+    }
     case BYE:
     Rio_writen(fd, "150", 3);
     return -1;

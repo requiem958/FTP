@@ -10,12 +10,32 @@ command parse_command(char buff[], int bufSize){
 
   strcpy(cmd.cmdline,buff);
   char * mot = strtok(buff,delim);
-  mot[strlen(mot)-1]=(mot[strlen(mot)-1]=='\n')?0:mot[strlen(mot)-1];
+  ER_EOL(mot);
   if(STR_EQ(mot,"GET")){
-    cmd.type = GET;
     mot = strtok(NULL,delim);
+    if (mot==NULL){
+      return cmd;
+    }
     strcpy(cmd.arg, mot);
-    cmd.arg[strlen(cmd.arg)-1]=0;//effacer le '\n'
+    ER_EOL(mot);
+
+    cmd.type = GET;
+  }
+  else if (STR_EQ(mot,"REST")){
+    mot = strtok(NULL,delim);
+    if (mot==NULL){
+      return cmd;
+    }
+    strcpy(cmd.arg, mot);
+
+    mot = strtok(NULL,delim);
+    if (mot==NULL){
+      return cmd;
+    }
+    ER_EOL(mot);
+    cmd.size = atol(mot);
+
+    cmd.type = REST;
   }
   else if(STR_EQ(mot,"BYE")){
     cmd.type = BYE;
