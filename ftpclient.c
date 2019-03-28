@@ -50,6 +50,7 @@ int main(int argc, char **argv)
           break;
         case REST:
           regetfile(cmd.arg,&rio,serverfd);
+          break;
         case BYE:
           quit = 1;
           break;
